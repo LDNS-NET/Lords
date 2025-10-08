@@ -4,7 +4,7 @@ import { PlusCircleIcon } from '@heroicons/vue/24/outline';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Search, User2Icon } from 'lucide-vue-next';
 import { ref } from 'vue';
-import { useToast } from 'vue3-toastify';
+import { useToast } from 'vue-toastification';
 
 const toast = useToast();
 

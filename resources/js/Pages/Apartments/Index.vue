@@ -1,7 +1,10 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
-import { House } from 'lucide-vue-next';
+import { House, Warehouse } from 'lucide-vue-next';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 defineProps({
     apartments: Object,
@@ -15,6 +18,7 @@ defineProps({
         <template #header>
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    <Warehouse class="inline w-6 h-6 text-blue-600 mr-1" />
                     Apartments
                 </h2>
                 <Link :href="route('apartments.create')" class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
