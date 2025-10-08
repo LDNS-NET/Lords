@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { House } from 'lucide-vue-next';
 
 defineProps({
     apartments: Object,
@@ -17,6 +18,7 @@ defineProps({
                     Apartments
                 </h2>
                 <Link :href="route('apartments.create')" class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    <House class="inline w-4 h-4 mr-1" />
                     Add Apartment
                 </Link>
             </div>

@@ -6,11 +6,15 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
-// ✅ Import Heroicons (outline + solid)
+// ✅ Vue Toastification
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
+
+// ✅ Heroicons (outline + solid)
 import * as HeroIconsOutline from '@heroicons/vue/24/outline';
 import * as HeroIconsSolid from '@heroicons/vue/24/solid';
 
-// ✅ Import Lucide icons (tree-shakable)
+// ✅ Lucide icons (modern & lightweight)
 import * as LucideIcons from 'lucide-vue-next';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
@@ -35,11 +39,24 @@ createInertiaApp({
             vueApp.component(`${name}Solid`, component);
         });
 
-        // ✅ Register Lucide icons safely (skip invalid components)
+        // ✅ Register Lucide icons globally
         Object.entries(LucideIcons).forEach(([name, component]) => {
             if (name && component && typeof component === 'object') {
                 vueApp.component(name, component);
             }
+        });
+
+        // ✅ Use Toastification properly
+        vueApp.use(Toast, {
+            position: 'top-right',
+            timeout: 3000,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            draggablePercent: 80,
+            showCloseButtonOnHover: true,
+            closeButton: 'button',
+            icon: true,
         });
 
         vueApp.mount(el);

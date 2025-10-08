@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "@heroicons/vue": "^2.2.0",
-        "lucide-vue-next": "^0.545.0"
+        "lucide-vue-next": "^0.545.0",
+        "vue3-toastify": "^0.2.8"
     }
 }
