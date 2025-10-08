@@ -70,7 +70,7 @@ class SmsController extends Controller
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => "Bearer {$apiKey}",
-        ])->post('https://api.talksasa.com/api/v1/sms/send', [
+        ])->post('https://bulksms.talksasa.com/api/v3/', [
             'sender_id' => $senderId,
             'phone' => $phone,
             'message' => $smsLog->message,
