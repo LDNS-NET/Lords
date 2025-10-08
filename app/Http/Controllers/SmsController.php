@@ -57,26 +57,31 @@ class SmsController extends Controller
     private function sendSms(SmsLog $smsLog)
 {
     try {
-        $apiKey = env('TALKSASA_API_KEY');
+        $apiToken = env('TALKSASA_API_KEY'); // This is your Bearer token
         $senderId = env('TALKSASA_SENDER_ID');
 
-        if (!$apiKey || !$senderId) {
-            $smsLog->update(['status' => 'failed']);
+        if (!$apiToken || !$senderId) {
+            $smsLog->update(['status' => 'failed', 'error_message' => 'Missing API credentials']);
             return;
         }
 
-        $phone = preg_replace('/^0/', '+254', $smsLog->phone_number); // convert 07xxx to +2547xxx
+        // Convert local 07xxxxxxxx → international +2547xxxxxxxx
+        $recipient = preg_replace('/^0/', '+254', $smsLog->phone_number);
 
         $response = Http::withHeaders([
+            'Authorization' => "Bearer {$apiToken}",
             'Accept' => 'application/json',
-            'Authorization' => "Bearer {$apiKey}",
-        ])->post('https://bulksms.talksasa.com/api/v3/', [
+            'Content-Type' => 'application/json',
+        ])->post('https://bulksms.talksasa.com/api/v3/sms/send', [
+            'recipient' => $recipient,
             'sender_id' => $senderId,
-            'phone' => $phone,
+            'type' => 'plain',
             'message' => $smsLog->message,
         ]);
 
-        if ($response->successful()) {
+        $data = $response->json();
+
+        if ($response->successful() && isset($data['status']) && $data['status'] === 'success') {
             $smsLog->update([
                 'status' => 'sent',
                 'sent_at' => now(),
@@ -84,9 +89,10 @@ class SmsController extends Controller
         } else {
             $smsLog->update([
                 'status' => 'failed',
-                'error_message' => $response->body(),
+                'error_message' => $data['message'] ?? $response->body(),
             ]);
         }
+
     } catch (\Exception $e) {
         $smsLog->update([
             'status' => 'failed',
@@ -94,5 +100,6 @@ class SmsController extends Controller
         ]);
     }
 }
+
 
 }
