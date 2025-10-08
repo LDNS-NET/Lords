@@ -1,6 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { PlusCircleIcon } from '@heroicons/vue/24/outline';
 import { Head, Link, router } from '@inertiajs/vue3';
+import { Search, User2Icon } from 'lucide-vue-next';
 import { ref } from 'vue';
 
 const props = defineProps({
@@ -22,9 +24,11 @@ const searchRenters = () => {
         <template #header>
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800">
+                    <User2Icon class="w-6 h-6 text-blue-600 inline-block mr-1" />
                     Renters
                 </h2>
                 <Link :href="route('renters.create')" class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    <PlusCircleIcon class="w-5 h-5 inline-block mr-1" />
                     Add Renter
                 </Link>
             </div>
@@ -45,7 +49,8 @@ const searchRenters = () => {
                                     @keyup.enter="searchRenters"
                                 >
                                 <button @click="searchRenters" class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                                    Search
+                                   
+                                    <Search class="w-5 h-5 inline-block ml-1" />
                                 </button>
                             </div>
                         </div>
