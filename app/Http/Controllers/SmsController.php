@@ -57,25 +57,26 @@ class SmsController extends Controller
     private function sendSms(SmsLog $smsLog)
 {
     try {
-        $apiToken = env('TALKSASA_API_KEY'); // This is your Bearer token
+        $apiToken = env('TALKSASA_API_KEY');
         $senderId = env('TALKSASA_SENDER_ID');
 
         if (!$apiToken || !$senderId) {
-            $smsLog->update(['status' => 'failed', 'error_message' => 'Missing API credentials']);
+            $smsLog->update([
+                'status' => 'failed',
+                'error_message' => 'Missing TalkSasa API credentials'
+            ]);
             return;
         }
 
-        // Convert local 07xxxxxxxx → international +2547xxxxxxxx
-        $recipient = preg_replace('/^0/', '+254', $smsLog->phone_number);
+        $recipient = preg_replace('/^0/', '+254', trim($smsLog->phone_number));
 
         $response = Http::withHeaders([
             'Authorization' => "Bearer {$apiToken}",
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-        ])->post('https://bulksms.talksasa.com/api/v3/sms/send', [
-            'recipient' => $recipient,
+        ])->post('https://api.talksasa.com/api/v1/sms/send', [
+            'recipients' => [$recipient],
             'sender_id' => $senderId,
-            'type' => 'plain',
             'message' => $smsLog->message,
         ]);
 
@@ -100,6 +101,5 @@ class SmsController extends Controller
         ]);
     }
 }
-
 
 }
