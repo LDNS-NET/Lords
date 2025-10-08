@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('apartment_id')->constrained()->onDelete('cascade');
             $table->string('house_number');
             $table->date('move_in_date');
+            $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null'); // Link to user account if created
             $table->timestamps();
         });

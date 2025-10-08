@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('reference')->unique();
             $table->string('status')->default('pending'); // pending, success, failed
             $table->timestamp('paid_at')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

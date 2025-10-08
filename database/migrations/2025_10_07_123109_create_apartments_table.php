@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('location');
             $table->integer('number_of_units');
             $table->text('description')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users');
             $table->timestamps();
         });
     }
