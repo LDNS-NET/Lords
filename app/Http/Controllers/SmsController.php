@@ -55,34 +55,44 @@ class SmsController extends Controller
     }
 
     private function sendSms(SmsLog $smsLog)
-    {
-        try {
-            // TalkSasa API integration
-            $apiKey = env('TALKSASA_API_KEY');
-            $senderId = env('TALKSASA_SENDER_ID');
+{
+    try {
+        $apiKey = env('TALKSASA_API_KEY');
+        $senderId = env('TALKSASA_SENDER_ID');
 
-            if (!$apiKey) {
-                $smsLog->update(['status' => 'failed']);
-                return;
-            }
-
-            $response = Http::post('https://api.talksasa.com/v1/sms/send', [
-                'api_key' => $apiKey,
-                'sender_id' => $senderId,
-                'phone' => $smsLog->phone_number,
-                'message' => $smsLog->message,
-            ]);
-
-            if ($response->successful()) {
-                $smsLog->update([
-                    'status' => 'sent',
-                    'sent_at' => now(),
-                ]);
-            } else {
-                $smsLog->update(['status' => 'failed']);
-            }
-        } catch (\Exception $e) {
+        if (!$apiKey || !$senderId) {
             $smsLog->update(['status' => 'failed']);
+            return;
         }
+
+        $phone = preg_replace('/^0/', '+254', $smsLog->phone_number); // convert 07xxx to +2547xxx
+
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => "Bearer {$apiKey}",
+        ])->post('https://api.talksasa.com/api/v1/sms/send', [
+            'sender_id' => $senderId,
+            'phone' => $phone,
+            'message' => $smsLog->message,
+        ]);
+
+        if ($response->successful()) {
+            $smsLog->update([
+                'status' => 'sent',
+                'sent_at' => now(),
+            ]);
+        } else {
+            $smsLog->update([
+                'status' => 'failed',
+                'error_message' => $response->body(),
+            ]);
+        }
+    } catch (\Exception $e) {
+        $smsLog->update([
+            'status' => 'failed',
+            'error_message' => $e->getMessage(),
+        ]);
     }
+}
+
 }
