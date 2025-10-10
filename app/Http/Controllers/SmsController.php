@@ -78,9 +78,7 @@ class SmsController extends Controller
                 return;
             }
 
-            // IMPORTANT: The withoutVerifying() method is used here for local development to bypass SSL certificate issues.
-            // This is INSECURE and MUST be removed in a production environment.
-            $response = Http::withoutVerifying()->withHeaders([
+            $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
