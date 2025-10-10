@@ -39,12 +39,12 @@ defineProps({
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <tr v-for="email in emailLogs.data" :key="email.id">
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ email.subject }}</td>
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-300 uppercase border-b dark:border-gray-600 border-r dark:border-gray-700">{{ email.subject }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="text-sm text-gray-600">{{ email.recipients.length }} recipient(s)</span>
+                                            <span class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-300 uppercase border-b dark:border-gray-600 border-r dark:border-gray-700">{{ email.recipients.length }} recipient(s)</span>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <div class="max-w-xs truncate">{{ email.body.replace(/<[^>]*>/g, '') }}</div>
+                                            <div class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-300 uppercase border-b dark:border-gray-600 border-r dark:border-gray-700">{{ email.body.replace(/<[^>]*>/g, '') }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span :class="{
@@ -55,7 +55,7 @@ defineProps({
                                                 {{ email.status }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-300 uppercase border-b dark:border-gray-600 border-r dark:border-gray-700">
                                             {{ email.sent_at ? new Date(email.sent_at).toLocaleString() : 'N/A' }}
                                         </td>
                                     </tr>

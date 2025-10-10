@@ -1,6 +1,10 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const props = defineProps({
     apartments: Array,
@@ -17,8 +21,18 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('renters.store'));
+    form.phone_number = String(form.phone_number ?? '');
+    form.post(route('renters.store'), {
+        onSuccess: () => {
+            toast.success('Renter created successfully!');
+            form.reset();
+        },
+        onError: () => {
+            toast.error('Failed to create renter. Please check the form for errors.');
+        },
+    });
 };
+
 </script>
 
 <template>
@@ -34,7 +48,7 @@ const submit = () => {
         <div class="py-12">
             <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6">
+                    <div class="p-6 block text-sm font-medium text-gray-700">
                         <form @submit.prevent="submit">
                             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                                 <div>

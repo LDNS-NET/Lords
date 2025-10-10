@@ -1,6 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const props = defineProps({
     renters: Array,
@@ -12,7 +15,14 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('payments.store'));
+    form.post(route('payments.store'), {
+        onSuccess: () => {
+            toast.success('Payment created successfully');
+        },
+        onError: () => {
+            toast.error('Failed to create payment');
+        }
+    });
 };
 </script>
 
@@ -34,13 +44,13 @@ const submit = () => {
                             <div class="mb-4">
                                 <label for="renter_id" class="block text-sm font-medium text-gray-700">Renter</label>
                                 <select id="renter_id" v-model="form.renter_id" 
-                                    class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
+                                    class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 block text-sm font-medium text-gray-700" required>
                                     <option value="">Select Renter</option>
                                     <option v-for="renter in renters" :key="renter.id" :value="renter.id">
                                         {{ renter.full_name }} - {{ renter.apartment?.name }} ({{ renter.house_number }})
                                     </option>
                                 </select>
-                                <div v-if="form.errors.renter_id" class="mt-1 text-sm text-red-600">{{ form.errors.renter_id }}</div>
+                                <div v-if="form.errors.renter_id" class="mt-1 text-sm text-red-600 ">{{ form.errors.renter_id }}</div>
                             </div>
 
                             <div class="mb-4">
@@ -50,7 +60,7 @@ const submit = () => {
                                         <span class="text-gray-500">/=</span>
                                     </div>
                                     <input type="number" id="amount" v-model="form.amount" step="0.01" min="0"
-                                        class="block w-full pl-7 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                        class="block w-full pl-7 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 block text-sm font-medium text-gray-700"
                                         placeholder="0.00" required>
                                 </div>
                                 <div v-if="form.errors.amount" class="mt-1 text-sm text-red-600">{{ form.errors.amount }}</div>

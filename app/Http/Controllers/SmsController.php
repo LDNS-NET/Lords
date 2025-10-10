@@ -64,6 +64,21 @@ class SmsController extends Controller
             ->with('success', 'SMS batch is being processed.');
     }
 
+    public function destroy(SmsLog $smsLog)
+    {
+        $smsLog->delete();
+
+        return redirect()->route('sms.index')
+            ->with('success', 'SMS log deleted successfully.');
+    }
+
+    public function show(SmsLog $smsLog)
+    {
+        return Inertia::render('Sms/Show', [
+            'smsLog' => $smsLog,
+        ]);
+    }
+
     private function sendSms(array $logIds, string $phoneNumbers, string $message)
     {
         try {

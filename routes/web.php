@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
     Route::get('/sms/create', [SmsController::class, 'create'])->name('sms.create');
     Route::post('/sms', [SmsController::class, 'store'])->name('sms.store');
+    Route::delete('/sms/{smsLog}', [SmsController::class, 'destroy'])->name('sms.destroy');
     // Emails
     Route::get('/emails', [EmailController::class, 'index'])->name('emails.index');
     Route::get('/emails/create', [EmailController::class, 'create'])->name('emails.create');

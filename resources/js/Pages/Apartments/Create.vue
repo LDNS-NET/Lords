@@ -67,8 +67,8 @@ const submit = () => {
               </div>
 
               <!-- Number of Units -->
-              <div class="mb-4">
-                <label for="number_of_units" class="block text-sm font-medium text-gray-700">Number of Units</label>
+              <div class="mb-4 block text-sm font-medium text-gray-700">
+                <label for="number_of_units" class="block text-sm font-medium">Number of Units</label>
                 <input
                   type="number"
                   id="number_of_units"
@@ -80,7 +80,7 @@ const submit = () => {
               </div>
 
               <!-- Description -->
-              <div class="mb-4">
+              <div class="mb-4 block text-sm font-medium text-gray-700">
                 <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                 <textarea
                   id="description"

@@ -112,10 +112,20 @@ const maxWidthClass = computed(() => {
             >
                 <div
                     v-show="show"
-                    class="mb-6 transform overflow-hidden rounded-lg bg-white shadow-xl transition-all sm:mx-auto sm:w-full"
+                    class="mb-6 transform overflow-hidden rounded-2xl bg-white shadow-2xl transition-all sm:mx-auto sm:w-full border border-gray-200"
                     :class="maxWidthClass"
                 >
-                    <slot v-if="showSlot" />
+                    <!-- Modal Header -->
+                    <div class="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-green-300 via-green-500 to-green-800 text-white">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-6 h-6 text-white opacity-80" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>
+                        </div>
+                        <button @click="close" class="text-white hover:text-gray-200 text-2xl font-bold focus:outline-none">&times;</button>
+                    </div>
+                    <!-- Modal Content -->
+                    <div class="px-6 py-6 bg-gradient-to-br from-white via-blue-20 to-cyan-50">
+                        <slot v-if="showSlot" />
+                    </div>
                 </div>
             </Transition>
         </div>

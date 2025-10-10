@@ -1,7 +1,12 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
+import { EyeIcon, Trash } from 'lucide-vue-next';
 import { ref } from 'vue';
+import Pagination from '@/Components/Pagination.vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const props = defineProps({
     payments: Object,
@@ -17,6 +22,19 @@ const filterPayments = () => {
 const exportPayments = () => {
     window.location.href = route('payments.export');
 };
+
+function destroy(id) {
+    if (confirm('Are you sure you want to delete this payment?')) {
+        router.delete(route('payments.destroy', id), {
+            onSuccess: () => {
+                toast.success('Payment deleted successfully');
+            },
+            onError: () => {
+                toast.error('Failed to delete payment');
+            }
+        });
+    }
+}
 </script>
 
 <template>
@@ -47,7 +65,7 @@ const exportPayments = () => {
                         <div class="mb-6">
                             <div class="flex gap-2">
                                 <select v-model="statusFilter" @change="filterPayments"
-                                    class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 block text-sm  text-gray-700">
                                     <option value="">All Status</option>
                                     <option value="pending">Pending</option>
                                     <option value="success">Success</option>
@@ -70,10 +88,10 @@ const exportPayments = () => {
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <tr v-for="payment in payments.data" :key="payment.id">
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ payment.renter_name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap font-semibold">Ksh {{ payment.amount }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ payment.reference }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 ">{{ payment.renter_name }}</td>
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500">Ksh {{ payment.amount }}</td>
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500">{{ payment.reference }}</td>
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500">
                                             <span :class="{
                                                 'bg-green-100 text-green-800': payment.status === 'success',
                                                 'bg-yellow-100 text-yellow-800': payment.status === 'pending',
@@ -82,12 +100,16 @@ const exportPayments = () => {
                                                 {{ payment.status }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500">
                                             {{ payment.paid_at ? new Date(payment.paid_at).toLocaleString() : 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4 space-x-2 whitespace-nowrap">
-                                            <Link :href="route('payments.show', payment.id)" class="text-blue-600 hover:text-blue-900">View</Link>
-                                            <Link :href="route('payments.destroy', payment.id)" method="delete" as="button" class="text-red-600 hover:text-red-900">Delete</Link>
+                                            <Link :href="route('payments.show', payment.id)" class="text-blue-600 hover:text-blue-900">
+                                                <EyeIcon class="inline-block h-4" />
+                                            </Link>
+                                            <button @click="destroy(payment.id)" class="text-red-600 hover:text-red-900">
+                                                <Trash class="inline-block h-4" />
+                                            </button>
                                         </td>
                                     </tr>
                                     <tr v-if="payments.data.length === 0">
@@ -98,26 +120,8 @@ const exportPayments = () => {
                         </div>
 
                         <!-- Pagination -->
-                        <div class="flex items-center justify-between mt-6">
-                            <div class="text-sm text-gray-700">
-                                Showing {{ payments.from }} to {{ payments.to }} of {{ payments.total }} results
-                            </div>
-                            <div class="flex space-x-2">
-                                <template v-for="link in payments.links" :key="link.label">
-                                    <Link
-                                        v-if="link.url"
-                                        :href="link.url"
-                                        :class="{'bg-blue-600 text-white': link.active, 'bg-white text-gray-700': !link.active}"
-                                        class="px-3 py-2 border rounded-md hover:bg-gray-50"
-                                        v-html="link.label"
-                                    />
-                                    <span
-                                        v-else
-                                        :class="{'bg-white text-gray-400': true, 'px-3 py-2 border rounded-md': true}"
-                                        v-html="link.label"
-                                    />
-                                </template>
-                            </div>
+                        <div class="mt-4">
+                            <Pagination :links="payments.links" />
                         </div>
                     </div>
                 </div>

@@ -10,11 +10,13 @@ import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import DangerButton from '@/Components/DangerButton.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import Pagination from '@/Components/Pagination.vue';
 
 const toast = useToast();
 
 defineProps({
     apartments: Object,
+
 });
 
 const editing = ref(null)
@@ -118,10 +120,10 @@ function submit() {
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <tr v-for="apartment in apartments.data" :key="apartment.id">
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ apartment.name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ apartment.location }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ apartment.number_of_units }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ apartment.renters_count }}</td>
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-300 uppercase border-b dark:border-gray-600 border-r dark:border-gray-700">{{ apartment.name }}</td>
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-300 uppercase border-b dark:border-gray-600 border-r dark:border-gray-700">{{ apartment.location }}</td>
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-300 uppercase border-b dark:border-gray-600 border-r dark:border-gray-700">{{ apartment.number_of_units }}</td>
+                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-300 uppercase border-b dark:border-gray-600 border-r dark:border-gray-700">{{ apartment.renters_count }}</td>
                                         <td class="px-6 py-4 space-x-2 whitespace-nowrap gap-2">
                                             <button @click="view(apartment)" class="text-blue-600 hover:text-green-600"><Eye class="inline-block h-4" /></button>
                                             <button @click="openEdit(apartment)" class="text-green-600 hover:text-blue-600"><Pencil class="inline-block h-4" /></button>
@@ -133,26 +135,8 @@ function submit() {
                         </div>
 
                         <!-- Pagination -->
-                        <div class="flex items-center justify-between mt-6">
-                            <div class="text-sm text-gray-700">
-                                Showing {{ apartments.from }} to {{ apartments.to }} of {{ apartments.total }} results
-                            </div>
-                            <div class="flex space-x-2">
-                                <template v-for="link in apartments.links" :key="link.label">
-                                    <Link
-                                        v-if="link.url"
-                                        :href="link.url"
-                                        :class="{'bg-blue-600 text-white': link.active, 'bg-white text-gray-700': !link.active}"
-                                        class="px-3 py-2 border rounded-md hover:bg-gray-50"
-                                        v-html="link.label"
-                                    />
-                                    <span
-                                        v-else
-                                        :class="{'bg-white text-gray-400': true, 'px-3 py-2 border rounded-md': true}"
-                                        v-html="link.label"
-                                    />
-                                </template>
-                            </div>
+                        <div class="mt-4">
+                            <Pagination :links="apartments.links" />
                         </div>
                     </div>
                 </div>

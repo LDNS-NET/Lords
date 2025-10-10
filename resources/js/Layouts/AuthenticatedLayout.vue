@@ -8,7 +8,7 @@ import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { useTheme } from "@/composables/useTheme";
 
-// ✅ Icons (Lucide + Heroicons)
+//Icons (Lucide + Heroicons)
 import {
   LayoutDashboard,
   Home,
@@ -21,16 +21,9 @@ import {
   UserCircle,
   Building2,
   FileText,
+  SunIcon,
+  FolderEdit,
 } from "lucide-vue-next";
-import {
-  HomeIcon,
-  BuildingOfficeIcon,
-  UserGroupIcon,
-  DocumentCurrencyDollarIcon,
-  ChatBubbleLeftRightIcon,
-  EnvelopeIcon,
-} from "@heroicons/vue/24/outline";
-
 // Theme composable
 const { theme, applyTheme } = useTheme();
 const sidebarOpen = ref(false);
@@ -154,7 +147,7 @@ watch(theme, (val) => {
         </div>
 
 
-        <div class="mb-4 px-2 text-gray-500 uppercase tracking-wider text-xs">
+       <!--- <div class="mb-4 px-2 text-gray-500 uppercase tracking-wider text-xs">
         <NavLink
           :href="route('emails.index')"
           :active="route().current('emails.index')"
@@ -164,6 +157,9 @@ watch(theme, (val) => {
           Emails
         </NavLink>
         </div>
+         
+        
+        Future Feature --->
         
       </div>
     </aside>
@@ -189,7 +185,7 @@ watch(theme, (val) => {
         <!-- Hamburger -->
         <button
           @click="sidebarOpen = true"
-          class="lg:hidden text-gray-600 focus:outline-none"
+          class="lg:hidden focus:outline-none"
         >
           <svg
             class="h-6 w-6"
@@ -205,74 +201,43 @@ watch(theme, (val) => {
             />
           </svg>
         </button>
+        <div class="flex items-center ml-2 align-left">
+            {{ $page.props.auth.user.name }}
+        </div>
 
-        <div class="flex items-center space-x-4 ml-auto">
-          <!-- Theme toggle -->
-          <button
-            @click="theme = theme === 'dark' ? 'light' : 'dark'"
-            class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            <svg
-              v-if="theme === 'dark'"
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 3v1m0 16v1m8.485-8.485h1M3.515 12.515h1m12.02 6.364l.707.707M6.343 6.343l.707.707m12.02-6.364l.707.707M6.343 17.657l.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21.752 15.002A9.718 9.718 0 0112 21a9.718 9.718 0 01-9.752-5.998A9.718 9.718 0 0112 3a9.718 9.718 0 019.752 5.998z"
-              />
-            </svg>
-          </button>
-
+        <div class="flex items-center space-x-4 ml-auto justify-between">          
           <!-- User Dropdown -->
+          
+          <div>
           <Dropdown align="right" width="48">
             <template #trigger>
               <button
                 type="button"
                 class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-200"
               >
-                <UserCircle class="h-5 w-5 mr-1 text-gray-500" />
-                {{ $page.props.auth.user.name }}
-                <svg
-                  class="ml-2 h-4 w-4"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M5.23 7.21a.75.75 0 011.06.02L10 11.188l3.71-3.96a.75.75 0 111.08 1.04l-4.24 4.52a.75.75 0 01-1.08 0l-4.24-4.52a.75.75 0 01.02-1.06z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
+                <Settings class="h-5 w-auto ml-1 text-gray-400" />
               </button>
             </template>
 
             <template #content>
-              <DropdownLink :href="route('profile.edit')">
-                <Settings class="h-4 w-4 mr-2" />
+
+                <!-- Theme toggle -->
+              <DropdownLink
+                
+                  @click="theme = theme === 'dark' ? 'light' : 'dark'"
+                  class="p-2 rounded-full hover:gray-400 hover:text-yellow-500 dark:hover:bg-yellow-500"
+                >
+                  <SunIcon class="h-4 w-4 mr-2" />
+              
+              </DropdownLink>
+
+
+              <DropdownLink :href="route('profile.edit')" class="flex">
+                <FolderEdit class="h-4 w-4 mr-2" />
                 Profile
               </DropdownLink>
+
+
               <DropdownLink
                 :href="route('logout')"
                 method="post"
@@ -284,6 +249,7 @@ watch(theme, (val) => {
               </DropdownLink>
             </template>
           </Dropdown>
+          </div>
         </div>
       </nav>
 
