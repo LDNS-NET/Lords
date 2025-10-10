@@ -53,7 +53,8 @@ defineProps({
                                                 'bg-green-100 text-green-800': sms.status === 'sent',
                                                 'bg-yellow-100 text-yellow-800': sms.status === 'pending',
                                                 'bg-red-100 text-red-800': sms.status === 'failed'
-                                            }" class="px-2 py-1 text-xs font-semibold rounded-full">
+                                            }" class="px-2 py-1 text-xs font-semibold rounded-full relative"
+                                            :title="sms.status === 'failed' ? sms.error_message : ''">
                                                 {{ sms.status }}
                                             </span>
                                         </td>

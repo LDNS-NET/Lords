@@ -38,63 +38,74 @@ class SmsController extends Controller
 
         $renters = Renter::whereIn('id', $validated['recipients'])->get();
 
-        $phoneNumbers = $renters->map(function ($renter) {
-            return preg_replace('/^0/', '254', trim($renter->phone_number));
-        })->implode(',');
+        if ($renters->isEmpty()) {
+            return redirect()->back()->withErrors(['recipients' => 'No valid renters selected.']);
+        }
 
-        $smsLog = SmsLog::create([
-            'recipient_name' => 'Bulk SMS',
-            'phone_number' => $phoneNumbers,
-            'message' => $validated['message'],
-            'status' => 'pending',
-        ]);
+        $logIds = [];
+        $phoneNumbers = [];
 
-        $this->sendSms($smsLog, $phoneNumbers);
+        foreach ($renters as $renter) {
+            $smsLog = SmsLog::create([
+                'recipient_name' => $renter->full_name,
+                'phone_number' => $renter->phone_number,
+                'message' => $validated['message'],
+                'status' => 'pending',
+            ]);
+            $logIds[] = $smsLog->id;
+            $phoneNumbers[] = preg_replace('/^0/', '254', trim($renter->phone_number));
+        }
+
+        $phoneNumbersString = implode(',', $phoneNumbers);
+
+        $this->sendSms($logIds, $phoneNumbersString, $validated['message']);
 
         return redirect()->route('sms.index')
             ->with('success', 'SMS batch is being processed.');
     }
 
-    private function sendSms(SmsLog $smsLog, string $phoneNumbers)
+    private function sendSms(array $logIds, string $phoneNumbers, string $message)
     {
         try {
             $apiKey = env('TALKSASA_API_KEY');
             $senderId = env('TALKSASA_SENDER_ID');
 
             if (!$apiKey || !$senderId) {
-                $smsLog->update([
+                SmsLog::whereIn('id', $logIds)->update([
                     'status' => 'failed',
                     'error_message' => 'Missing TalkSasa API credentials'
                 ]);
                 return;
             }
 
-            $response = Http::withHeaders([
+            // IMPORTANT: The withoutVerifying() method is used here for local development to bypass SSL certificate issues.
+            // This is INSECURE and MUST be removed in a production environment.
+            $response = Http::withoutVerifying()->withHeaders([
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])->post('https://bulksms.talksasa.com/api/sms/v1/sendsms', [
                 'api_key' => $apiKey,
                 'sender_id' => $senderId,
-                'message' => $smsLog->message,
+                'message' => $message,
                 'phone' => $phoneNumbers,
             ]);
 
             $data = $response->json();
 
             if ($response->successful() && isset($data['status']) && $data['status'] === 'success') {
-                $smsLog->update([
+                SmsLog::whereIn('id', $logIds)->update([
                     'status' => 'sent',
                     'sent_at' => now(),
                 ]);
             } else {
-                $smsLog->update([
+                SmsLog::whereIn('id', $logIds)->update([
                     'status' => 'failed',
                     'error_message' => $data['message'] ?? $response->body(),
                 ]);
             }
 
         } catch (\Exception $e) {
-            $smsLog->update([
+            SmsLog::whereIn('id', $logIds)->update([
                 'status' => 'failed',
                 'error_message' => $e->getMessage(),
             ]);

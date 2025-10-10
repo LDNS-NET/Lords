@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('phone_number');
             $table->text('message');
             $table->string('status')->default('pending'); // pending, sent, failed
+            $table->text('error_message')->nullable();
             $table->timestamp('sent_at')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->timestamps();
