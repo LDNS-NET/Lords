@@ -81,10 +81,10 @@ class SmsController extends Controller
             // IMPORTANT: The withoutVerifying() method is used here for local development to bypass SSL certificate issues.
             // This is INSECURE and MUST be removed in a production environment.
             $response = Http::withoutVerifying()->withHeaders([
+                'Authorization' => 'Bearer ' . $apiKey,
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])->post('https://bulksms.talksasa.com/api/v1/sms/send', [
-                'api_key' => $apiKey,
                 'sender_id' => $senderId,
                 'message' => $message,
                 'phone' => $phoneNumbers,
