@@ -84,7 +84,7 @@ class SmsController extends Controller
                 'Authorization' => 'Bearer ' . $apiKey,
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-            ])->post('https://bulksms.talksasa.com/api/v1/sms/send', [
+            ])->post('https://bulksms.talksasa.com/api/v3/sms/send', [
                 'sender_id' => $senderId,
                 'message' => $message,
                 'phone' => $phoneNumbers,
