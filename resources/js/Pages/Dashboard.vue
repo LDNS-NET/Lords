@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+import { AlertCircleIcon } from 'lucide-vue-next';
 
 defineProps({
     stats: Object,
@@ -13,9 +14,15 @@ defineProps({
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            <div class="flex items-center space-x-4 justify-between">
+            <h2 class="text-xl font-semibold leading-tight">
                 Dashboard
             </h2>
+            <h2 class="text-xl font-semibold leading-tight">
+                <AlertCircleIcon class="w-6 h-6 text-red-600 inline-block ml-2" />
+                Realtime updates on dashboard coming soon!
+            </h2>
+            </div>
         </template>
 
         <div class="py-12">

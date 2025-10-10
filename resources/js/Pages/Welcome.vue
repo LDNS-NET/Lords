@@ -2,6 +2,16 @@
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Head, Link } from "@inertiajs/vue3";
+import {
+    Home,
+    Users,
+    CreditCard,
+    BarChart,
+    MessageSquare,
+    Mail,
+    Shield,
+    Globe,
+} from "lucide-vue-next";
 
 defineProps({
     canLogin: {
@@ -44,7 +54,7 @@ function handleImageError() {
                     class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3"
                 >
                     <div class="flex lg:col-start-2 lg:justify-center">
-                        <ApplicationLogo class="h-20 w-auto"/>
+                        <ApplicationLogo class="h-20 w-auto" />
                     </div>
                     <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
                         <Link
@@ -52,9 +62,7 @@ function handleImageError() {
                             :href="route('dashboard')"
                             class="rounded-md px-5 py-5 font-extrabold text-black ring-1 ring-transparent transition hover:text-blue-400 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                         >
-                            <PrimaryButton
-                                class="w-full h-full"
-                            >
+                            <PrimaryButton class="w-full h-full">
                                 Dashboard
                             </PrimaryButton>
                         </Link>
@@ -205,42 +213,42 @@ function handleImageError() {
                             <div
                                 v-for="(feature, index) in [
                                     {
-                                        icon: '🏠',
+                                        icon: Home,
                                         title: 'Property Management',
                                         text: 'Record and track multiple buildings and units easily.',
                                     },
                                     {
-                                        icon: '👥',
+                                        icon: Users,
                                         title: 'Tenant Records',
                                         text: 'Register and manage tenants with detailed profiles.',
                                     },
                                     {
-                                        icon: '💳',
+                                        icon: CreditCard,
                                         title: 'Online Payments',
                                         text: 'Accept mobile money and online payments seamlessly.',
                                     },
                                     {
-                                        icon: '📊',
+                                        icon: BarChart,
                                         title: 'Rent Reports',
                                         text: 'Get real-time analytics on rent collection and occupancy.',
                                     },
                                     {
-                                        icon: '📱',
+                                        icon: MessageSquare,
                                         title: 'Bulk SMS',
                                         text: 'Send rent reminders and updates via integrated SMS gateway.',
                                     },
                                     {
-                                        icon: '📧',
+                                        icon: Mail,
                                         title: 'Email Alerts',
                                         text: 'Keep tenants informed with professional email notifications.',
                                     },
                                     {
-                                        icon: '🔐',
+                                        icon: Shield,
                                         title: 'Role-Based Access',
                                         text: 'Secure access for landlords, agents, and admins.',
                                     },
                                     {
-                                        icon: '🌍',
+                                        icon: Globe,
                                         title: 'Regional Support',
                                         text: 'Built for East Africa, expanding across regions soon.',
                                     },
@@ -248,37 +256,32 @@ function handleImageError() {
                                 :key="index"
                                 class="group rounded-2xl bg-white dark:bg-zinc-900 p-6 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-zinc-800"
                             >
-                                <div
-                                    class="text-4xl mb-4 transition-transform group-hover:scale-110"
-                                >
-                                    {{ feature.icon }}
-                                </div>
+                                <component
+                                    :is="feature.icon"
+                                    class="w-auto h-7 mb-4 text-blue-500 transition-transform group-hover:scale-110"
+                                />
+
                                 <h3
                                     class="text-xl font-semibold mb-2 text-black dark:text-white"
                                 >
                                     {{ feature.title }}
                                 </h3>
+
                                 <p class="text-black/70 dark:text-white/70">
                                     {{ feature.text }}
                                 </p>
                             </div>
                         </div>
-
-                        <p
-                            class="mt-12 text-center text-sm text-black/60 dark:text-white/60"
-                        >
-                            Built using <strong>Laravel</strong> +
-                            <strong>Vue 3</strong> +
-                            <strong>Inertia.js</strong> — fast, secure, and
-                            reliable.
-                        </p>
                     </section>
                 </main>
 
-                <footer
-                    class="py-16 text-center text-sm text-black dark:text-white/70"
-                >
-                    Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})
+                <footer>
+                    <p
+                        class="mt-12 text-center text-sm text-black/90 dark:text-white/60 mb-6"
+                    >
+                        Built By <strong>LDNS NETWORKS</strong> — fast, secure,
+                        and reliable.
+                    </p>
                 </footer>
             </div>
         </div>
