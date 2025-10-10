@@ -123,7 +123,7 @@ const maxWidthClass = computed(() => {
                         <button @click="close" class="text-white hover:text-gray-200 text-2xl font-bold focus:outline-none">&times;</button>
                     </div>
                     <!-- Modal Content -->
-                    <div class="px-6 py-6 bg-gradient-to-br from-white via-blue-20 to-cyan-50">
+                    <div class="px-6 py-6 bg-gradient-to-br from-white via-blue-50 to-cyan-50">
                         <slot v-if="showSlot" />
                     </div>
                 </div>

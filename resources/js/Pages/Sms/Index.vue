@@ -143,8 +143,8 @@ function view(sms) {
 
                         <!-- View Modal -->
                         <Modal :show="!!viewing" @close="viewing = null">
-                            <div class="p-6 dark:bg-gray-800 dark:text-gray-100" v-if="viewing">
-                                <h3 class="text-lg font-medium text-gray-100 mb-4">SMS Details</h3>
+                            <div class="p-2 dark:bg-gray-800 dark:text-gray-100" v-if="viewing">
+                                <h3 class="text-xl font-extrabold mb-5">SMS Details</h3>
                                 <div class="space-y-4">
                                     <div>
                                         <strong>Recipient:</strong> {{ viewing.recipient_name }}
