@@ -23,8 +23,16 @@ const toggleSelectAll = () => {
 };
 
 const submit = () => {
-    form.post(route('sms.store'));
+  console.log('SUBMITTING', { recipients: form.recipients, message: form.message });
+
+  form.post(route('sms.store'), {
+    onStart: () => console.log('request started'),
+    onSuccess: (page) => console.log('success', page),
+    onError: (errors) => console.log('validation errors', errors),
+    onFinish: () => console.log('request finished'),
+  });
 };
+
 </script>
 
 <template>

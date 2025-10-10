@@ -38,68 +38,67 @@ class SmsController extends Controller
 
         $renters = Renter::whereIn('id', $validated['recipients'])->get();
 
-        foreach ($renters as $renter) {
-            $smsLog = SmsLog::create([
-                'recipient_name' => $renter->full_name,
-                'phone_number' => $renter->phone_number,
-                'message' => $validated['message'],
-                'status' => 'pending',
-            ]);
+        $phoneNumbers = $renters->map(function ($renter) {
+            return preg_replace('/^0/', '254', trim($renter->phone_number));
+        })->implode(',');
 
-            // Send SMS via TalkSasa API
-            $this->sendSms($smsLog);
-        }
+        $smsLog = SmsLog::create([
+            'recipient_name' => 'Bulk SMS',
+            'phone_number' => $phoneNumbers,
+            'message' => $validated['message'],
+            'status' => 'pending',
+        ]);
+
+        $this->sendSms($smsLog, $phoneNumbers);
 
         return redirect()->route('sms.index')
-            ->with('success', 'SMS sent successfully.');
+            ->with('success', 'SMS batch is being processed.');
     }
 
-    private function sendSms(SmsLog $smsLog)
-{
-    try {
-        $apiToken = env('TALKSASA_API_KEY');
-        $senderId = env('TALKSASA_SENDER_ID');
+    private function sendSms(SmsLog $smsLog, string $phoneNumbers)
+    {
+        try {
+            $apiKey = env('TALKSASA_API_KEY');
+            $senderId = env('TALKSASA_SENDER_ID');
 
-        if (!$apiToken || !$senderId) {
+            if (!$apiKey || !$senderId) {
+                $smsLog->update([
+                    'status' => 'failed',
+                    'error_message' => 'Missing TalkSasa API credentials'
+                ]);
+                return;
+            }
+
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+            ])->post('https://bulksms.talksasa.com/api/sms/v1/sendsms', [
+                'api_key' => $apiKey,
+                'sender_id' => $senderId,
+                'message' => $smsLog->message,
+                'phone' => $phoneNumbers,
+            ]);
+
+            $data = $response->json();
+
+            if ($response->successful() && isset($data['status']) && $data['status'] === 'success') {
+                $smsLog->update([
+                    'status' => 'sent',
+                    'sent_at' => now(),
+                ]);
+            } else {
+                $smsLog->update([
+                    'status' => 'failed',
+                    'error_message' => $data['message'] ?? $response->body(),
+                ]);
+            }
+
+        } catch (\Exception $e) {
             $smsLog->update([
                 'status' => 'failed',
-                'error_message' => 'Missing TalkSasa API credentials'
-            ]);
-            return;
-        }
-
-        $recipient = preg_replace('/^0/', '+254', trim($smsLog->phone_number));
-
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer {$apiToken}",
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ])->post('https://bulksms.talksasa.com/api/v1/sms/send', [
-            'recipients' => [$recipient],
-            'sender_id' => $senderId,
-            'message' => $smsLog->message,
-        ]);
-
-        $data = $response->json();
-
-        if ($response->successful() && isset($data['status']) && $data['status'] === 'success') {
-            $smsLog->update([
-                'status' => 'sent',
-                'sent_at' => now(),
-            ]);
-        } else {
-            $smsLog->update([
-                'status' => 'failed',
-                'error_message' => $data['message'] ?? $response->body(),
+                'error_message' => $e->getMessage(),
             ]);
         }
-
-    } catch (\Exception $e) {
-        $smsLog->update([
-            'status' => 'failed',
-            'error_message' => $e->getMessage(),
-        ]);
     }
-}
 
 }

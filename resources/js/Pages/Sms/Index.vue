@@ -40,9 +40,13 @@ defineProps({
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     <tr v-for="sms in smsLogs.data" :key="sms.id">
                                         <td class="px-6 py-4 whitespace-nowrap">{{ sms.recipient_name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ sms.phone_number }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="max-w-xs truncate" :title="sms.phone_number">
+                                                {{ sms.phone_number }}
+                                            </div>
+                                        </td>
                                         <td class="px-6 py-4">
-                                            <div class="max-w-xs truncate">{{ sms.message }}</div>
+                                            <div class="max-w-xs truncate" :title="sms.message">{{ sms.message }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span :class="{
