@@ -85,9 +85,10 @@ class SmsController extends Controller
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ])->post('https://bulksms.talksasa.com/api/v3/sms/send', [
+                'recipient' => $phoneNumbers,
                 'sender_id' => $senderId,
+                'type' => 'plain',
                 'message' => $message,
-                'phone' => $phoneNumbers,
             ]);
 
             $data = $response->json();
