@@ -59,7 +59,7 @@ const submit = () => {
                                         <span class="text-sm dark:text-gray-400 text-gray-600">Select All</span>
                                     </label>
                                 </div>
-                                <div class="p-4 space-y-2 border border-gray-300 dark:border-gray-600 rounded-md max-h-64 overflow-y-auto dark:bg-gray-700 dark:text-gray-300">
+                                <div class="p-4 space-y-2 border border-gray-300 dark:border-gray-600 rounded-md max-h-64 overflow-y-auto dark:bg-gray-700 dark:text-gray-300 text-gray-700">
                                     <label v-for="renter in renters" :key="renter.id" class="flex items-center">
                                         <input type="checkbox" :value="renter.id" v-model="form.recipients" 
                                             class="mr-2 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:checked:bg-blue-600 rounded focus:ring-blue-500">
@@ -72,7 +72,7 @@ const submit = () => {
                                 <div v-if="form.errors.recipients" class="mt-1 text-sm text-red-600">{{ form.errors.recipients }}</div>
                             </div>
 
-                            <div class="mb-4">
+                            <div class="mb-4 text-gray-700">
                                 <label for="message" class="block text-sm font-medium dark:text-gray-300 text-gray-700">Message</label>
                                 <textarea id="message" v-model="form.message" rows="6"
                                     class="block w-full mt-1 border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-200 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
