@@ -83,7 +83,7 @@ class SmsController extends Controller
             $response = Http::withoutVerifying()->withHeaders([
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
-            ])->post('https://bulksms.talksasa.com/api/sms/v1/sendsms', [
+            ])->post('https://bulksms.talksasa.com/api/v1/sms/send', [
                 'api_key' => $apiKey,
                 'sender_id' => $senderId,
                 'message' => $message,
