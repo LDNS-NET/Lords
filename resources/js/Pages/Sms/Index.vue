@@ -69,7 +69,7 @@ function view(sms) {
     <AuthenticatedLayout>
         <template #header>
             <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold leading-tight text-gray-100">
+                <h2 class="text-xl font-semibold leading-tight">
                     SMS Logs
                 </h2>
                 <Link :href="route('sms.create')" class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
