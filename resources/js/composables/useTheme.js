@@ -22,6 +22,14 @@ function applyTheme(val) {
   }
 }
 
+// Listen for OS theme changes if using "system" mode
+if (theme.value === 'system') {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    applyTheme(e.matches ? 'dark' : 'light')
+  })
+}
+
+
 
 function applyPrimaryColor(color) {
   document.documentElement.style.setProperty('--primary', color)
