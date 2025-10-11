@@ -15,6 +15,7 @@ const toast = useToast();
 
 defineProps({
     smsLogs: Object,
+    perPage: Number,
 });
 
 const editing = ref(null);
@@ -145,7 +146,7 @@ function view(sms) {
                         </div>
 
                         <div class="mt-4">
-                            <Pagination :links="smsLogs.links" />
+                            <Pagination :links="smsLogs.links" :per-page="perPage" />
                         </div>
 
                         <!-- View Modal -->

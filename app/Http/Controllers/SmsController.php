@@ -10,14 +10,18 @@ use Illuminate\Support\Facades\Http;
 
 class SmsController extends Controller
 {
-    public function index()
-    {
-        $smsLogs = SmsLog::latest()->paginate(10);
+    public function index(Request $request)
+{
+    $perPage = (int) $request->input('perPage', 10);
 
-        return Inertia::render('Sms/Index', [
-            'smsLogs' => $smsLogs,
-        ]);
-    }
+    $smsLogs = SmsLog::latest()->paginate($perPage)->withQueryString();
+
+    return Inertia::render('Sms/Index', [
+        'smsLogs' => $smsLogs,
+        'perPage' => (int) $perPage,
+    ]);
+}
+
 
     public function create()
     {

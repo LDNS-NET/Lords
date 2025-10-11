@@ -28,11 +28,11 @@ const form = useForm({
 function updateRenter() {
     form.put(route('renters.update', props.renter.id), {
         onSuccess: () => {
-            toast.success('Renter updated successfully!');
+            toast.success('Tenant updated successfully!');
             router.visit(route('renters.index'));
         },
         onError: () => {
-            toast.error('Failed to update renter. Please check the form for errors.');
+            toast.error('Failed to update tenant. Please check the form for errors.');
         },
     });
 }
@@ -44,7 +44,7 @@ function updateRenter() {
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-100">
-                Edit Renter
+                Edit Tenant
             </h2>
         </template>
 
@@ -166,7 +166,7 @@ function updateRenter() {
                                     :disabled="form.processing"
                                     class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
                                 >
-                                    Update Renter
+                                    Update Tenant
                                 </button>
                             </div>
                         </form>

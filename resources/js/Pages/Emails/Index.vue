@@ -1,9 +1,12 @@
 <script setup>
+import Pagination from '@/Components/Pagination.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 
 defineProps({
     emailLogs: Object,
+    perPage: Number,
+        
 });
 </script>
 
@@ -93,31 +96,10 @@ defineProps({
                         </div>
 
                         <!-- Pagination -->
-                        <div class="flex items-center justify-between mt-6">
-                            <div class="text-sm text-gray-700 dark:text-gray-300">
-                                Showing {{ emailLogs.from }} to {{ emailLogs.to }} of {{ emailLogs.total }} results
-                            </div>
-
-                            <div class="flex space-x-2">
-                                <template v-for="link in emailLogs.links" :key="link.label">
-                                    <Link
-                                        v-if="link.url"
-                                        :href="link.url"
-                                        :class="{
-                                            'bg-blue-600 text-white dark:bg-blue-700 dark:hover:bg-blue-600': link.active,
-                                            'bg-white text-gray-700 hover:bg-gray-100 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700': !link.active
-                                        }"
-                                        class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium transition"
-                                        v-html="link.label"
-                                    />
-                                    <span
-                                        v-else
-                                        class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm font-medium text-gray-400 dark:text-gray-500 cursor-not-allowed"
-                                        v-html="link.label"
-                                    />
-                                </template>
-                            </div>
+                        <div class="mt-4">
+                            <Pagination :links="emailLogs.links" :perPage="perPage" />
                         </div>
+                        
                     </div>
                 </div>
             </div>

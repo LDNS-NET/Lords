@@ -11,6 +11,7 @@ class RenterController extends Controller
 {
     public function index(Request $request)
     {
+        
         $query = Renter::with('apartment');
 
         if ($request->has('search')) {
@@ -21,12 +22,13 @@ class RenterController extends Controller
                     ->orWhere('phone_number', 'like', "%{$search}%");
             });
         }
-
-        $renters = $query->paginate(10);
+        $perPage = request('per_page', 10);
+        $renters = $query->paginate($perPage);
 
         return Inertia::render('Renters/Index', [
             'renters' => $renters,
             'filters' => $request->only('search'),
+            'perPage' => (int) $perPage,
         ]);
     }
 

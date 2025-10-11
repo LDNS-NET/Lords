@@ -2,6 +2,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head, useForm } from '@inertiajs/vue3'
 import { useToast } from 'vue-toastification'
+import InputLabel from '@/Components/InputLabel.vue'
+import TextInput from '@/Components/TextInput.vue'
+import InputError from '@/Components/InputError.vue'
+import PrimaryButton from '@/Components/PrimaryButton.vue'
 
 const toast = useToast()
 
@@ -30,83 +34,82 @@ const submit = () => {
 
   <AuthenticatedLayout>
     <template #header>
-      <h2 class="text-xl font-semibold leading-tight text-gray-800">
+      <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-100">
         Create Apartment
       </h2>
     </template>
 
     <div class="py-12">
       <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-          <div class="p-6">
-            <form @submit.prevent="submit">
+        <div class="overflow-hidden bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
+          <div class="p-6 space-y-6">
+            <form @submit.prevent="submit" class="space-y-6">
+              
               <!-- Name -->
-              <div class="mb-4">
-                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                <input
-                  type="text"
+              <div>
+                <InputLabel for="name" value="Name" />
+                <TextInput
                   id="name"
                   v-model="form.name"
-                  class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  type="text"
+                  class="mt-1 block w-full"
                   required
                 />
-                <div v-if="form.errors.name" class="mt-1 text-sm text-red-600">{{ form.errors.name }}</div>
+                <InputError :message="form.errors.name" class="mt-2" />
               </div>
 
               <!-- Location -->
-              <div class="mb-4">
-                <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
-                <input
-                  type="text"
+              <div>
+                <InputLabel for="location" value="Location" />
+                <TextInput
                   id="location"
                   v-model="form.location"
-                  class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  type="text"
+                  class="mt-1 block w-full"
                   required
                 />
-                <div v-if="form.errors.location" class="mt-1 text-sm text-red-600">{{ form.errors.location }}</div>
+                <InputError :message="form.errors.location" class="mt-2" />
               </div>
 
               <!-- Number of Units -->
-              <div class="mb-4 block text-sm font-medium text-gray-700">
-                <label for="number_of_units" class="block text-sm font-medium">Number of Units</label>
-                <input
-                  type="number"
+              <div>
+                <InputLabel for="number_of_units" value="Number of Units" />
+                <TextInput
                   id="number_of_units"
                   v-model="form.number_of_units"
-                  class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  type="text"
+                  min="1"
+                  class="mt-1 block w-full"
                   required
                 />
-                <div v-if="form.errors.number_of_units" class="mt-1 text-sm text-red-600">{{ form.errors.number_of_units }}</div>
+                <InputError :message="form.errors.number_of_units" class="mt-2" />
               </div>
 
               <!-- Description -->
-              <div class="mb-4 block text-sm font-medium text-gray-700">
-                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+              <div>
+                <InputLabel for="description" value="Description" />
                 <textarea
                   id="description"
                   v-model="form.description"
                   rows="4"
-                  class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  class="mt-1 block block w-full"
                 ></textarea>
-                <div v-if="form.errors.description" class="mt-1 text-sm text-red-600">{{ form.errors.description }}</div>
+                <InputError :message="form.errors.description" class="mt-2" />
               </div>
 
               <!-- Actions -->
               <div class="flex justify-end space-x-3">
                 <a
                   :href="route('apartments.index')"
-                  class="px-4 py-2 text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300"
+                  class="px-4 py-2 text-gray-700 dark:text-gray-200 bg-gray-200 dark:bg-gray-700 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition"
                 >
                   Cancel
                 </a>
-                <button
-                  type="submit"
-                  :disabled="form.processing"
-                  class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
-                >
+                <PrimaryButton :disabled="form.processing">
                   Create Apartment
-                </button>
+                </PrimaryButton>
               </div>
+
             </form>
           </div>
         </div>

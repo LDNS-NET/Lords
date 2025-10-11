@@ -18,11 +18,13 @@ class PaymentController extends Controller
             $query->where('status', $request->status);
         }
 
-        $payments = $query->latest()->paginate(10);
+        $perPage = (int) $request->input('perPage', 10);
+        $payments = $query->latest()->paginate($perPage);
 
         return Inertia::render('Payments/Index', [
             'payments' => $payments,
             'filters' => $request->only('status'),
+            'perPage' => (int) $perPage,
         ]);
     }
 

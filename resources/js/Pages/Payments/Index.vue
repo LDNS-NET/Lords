@@ -13,6 +13,7 @@ const { theme } = useTheme()
 const props = defineProps({
   payments: Object,
   filters: Object,
+  perPage: Number,
 })
 
 const statusFilter = ref(props.filters.status || '')
@@ -178,7 +179,7 @@ function destroy(id) {
 
             <!-- Pagination -->
             <div class="mt-4">
-              <Pagination :links="payments.links" />
+              <Pagination :links="payments.links" :perPage="perPage" />
             </div>
           </div>
         </div>

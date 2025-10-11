@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* === Global Dark Mode + Mobile Safe-Area Fix === */
+html,
+body {
+  @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white;
+  min-height: 100%;
+  height: 100%;
+}
+
+/* Ensure overscroll areas respect dark mode */
+body {
+  @apply transition-colors duration-300;
+  overscroll-behavior-y: contain;
+  background-color: theme('colors.gray.50');
+}
+
+:root {
+  color-scheme: light dark;
+}
+
+/* For iOS and Android safe areas at the bottom */
+.safe-area {
+  padding-bottom: env(safe-area-inset-bottom);
+  background-color: inherit;
+}

@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\Http;
 
 class EmailController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $emailLogs = EmailLog::latest()->paginate(10);
+        $perPage = (int) $request->input('perPage', 10);
+        $emailLogs = EmailLog::latest()->paginate($perPage);
 
         return Inertia::render('Emails/Index', [
             'emailLogs' => $emailLogs,
+            'perPage' => $perPage,
         ]);
     }
 

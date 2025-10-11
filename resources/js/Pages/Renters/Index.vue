@@ -13,6 +13,7 @@ const toast = useToast();
 const props = defineProps({
     renters: Object,
     filters: Object,
+    perPage: Number,
 });
 
 const viewing = ref(null);
@@ -52,14 +53,14 @@ function destroy(renterId) {
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-100 flex items-center">
                     <User2Icon class="w-6 h-6 text-blue-600 mr-2" />
-                    Renters
+                    Tenants
                 </h2>
                 <Link
                     :href="route('renters.create')"
                     class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 flex items-center"
                 >
                     <PlusCircleIcon class="w-5 h-5 mr-2" />
-                    Add Renter
+                    Add Tenant
                 </Link>
             </div>
         </template>
@@ -132,7 +133,7 @@ function destroy(renterId) {
                                             colspan="6"
                                             class="px-6 py-4 text-center text-gray-500 dark:text-gray-400"
                                         >
-                                            No renters found.
+                                            No Tenants found.
                                         </td>
                                     </tr>
                                 </tbody>
@@ -141,13 +142,13 @@ function destroy(renterId) {
 
                         <!-- Pagination -->
                         <div class="mt-4">
-                            <Pagination :links="renters.links" />
+                            <Pagination :links="renters.links" :perPage="perPage" />
                         </div>
 
                         <!-- Viewing Modal -->
                         <Modal :show="!!viewing" @close="viewing = null">
                             <div class="p-6 dark:bg-gray-800 dark:text-gray-100 rounded-lg">
-                                <h3 class="text-lg font-semibold mb-4">Renter Details</h3>
+                                <h3 class="text-lg font-semibold mb-4">Tenant Details</h3>
                                 <div class="space-y-2 text-sm">
                                     <div><strong>Name:</strong> {{ viewing?.full_name }}</div>
                                     <div><strong>Email:</strong> {{ viewing?.email }}</div>

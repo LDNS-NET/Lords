@@ -8,13 +8,15 @@ use Inertia\Inertia;
 
 class ApartmentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = (int) $request->input('perPage', 10);
         $apartments = Apartment::withCount('renters')
-            ->paginate(10);
+            ->paginate($perPage);
 
         return Inertia::render('Apartments/Index', [
             'apartments' => $apartments,
+            'perPage' => (int) $perPage,
         ]);
     }
 

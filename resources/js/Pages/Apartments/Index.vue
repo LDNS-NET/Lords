@@ -16,6 +16,7 @@ const toast = useToast()
 
 const props = defineProps({
     apartments: Object,
+    perPage: Number,
 })
 
 const editing = ref(null)
@@ -166,7 +167,7 @@ function submit() {
                         </div>
 
                         <div class="mt-4">
-                            <Pagination :links="apartments.links" />
+                            <Pagination :links="apartments.links" :perPage="perPage" />
                         </div>
                     </div>
                 </div>
