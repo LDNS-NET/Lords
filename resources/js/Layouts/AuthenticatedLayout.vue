@@ -38,7 +38,7 @@ watch(theme, (val) => {
 <template>
     <!-- Wrapper -->
     <div
-        class="flex min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300 w-full"
+        class="flex min-h-auto bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300 w-full"
     >
         <!-- Sidebar -->
         <aside

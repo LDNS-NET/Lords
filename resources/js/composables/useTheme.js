@@ -11,10 +11,17 @@ function applyTheme(val) {
     document.documentElement.classList.add('light')
     document.documentElement.classList.remove('dark')
   } else {
-    document.documentElement.classList.remove('dark')
-    document.documentElement.classList.remove('light')
+    // System mode: follow OS preference
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark')
+      document.documentElement.classList.remove('light')
+    } else {
+      document.documentElement.classList.add('light')
+      document.documentElement.classList.remove('dark')
+    }
   }
 }
+
 
 function applyPrimaryColor(color) {
   document.documentElement.style.setProperty('--primary', color)
