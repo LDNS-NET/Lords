@@ -39,3 +39,13 @@ export function useTheme() {
     applyPrimaryColor,
   }
 }
+
+// Apply theme and color immediately on load
+const savedTheme = localStorage.getItem('ldns_theme') || 'light'
+theme.value = savedTheme
+applyTheme(savedTheme)
+
+const savedPrimary = localStorage.getItem('ldns_primary_color') || '#2563eb'
+primaryColor.value = savedPrimary
+applyPrimaryColor(savedPrimary)
+

@@ -2,6 +2,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const props = defineProps({
     renters: Array,
@@ -27,8 +30,16 @@ const submit = () => {
 
   form.post(route('sms.store'), {
     onStart: () => console.log('request started'),
-    onSuccess: (page) => console.log('success', page),
-    onError: (errors) => console.log('validation errors', errors),
+    onSuccess: (page) => {
+        console.log('success', page);
+        toast.success('SMS queued for sending');
+        form.reset();
+        selectAll.value = false;
+    },
+    onError: (errors) => {
+        console.log('validation errors', errors);
+        toast.error('Failed to send SMS. Please check the form for errors.');
+    },
     onFinish: () => console.log('request finished'),
   });
 };

@@ -9,6 +9,7 @@ use App\Http\Controllers\EmailController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -20,10 +21,10 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
     // Dashboard
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/data', [DashboardController::class, 'data'])->name('dashboard.data');
 
     // Apartments
     Route::get('/apartments', [ApartmentController::class, 'index'])->name('apartments.index');
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/apartments/{apartment}', [ApartmentController::class, 'destroy'])->name('apartments.destroy');
 
     // Renters
+    Route::resource('renters', RenterController::class);
     Route::get('/renters', [RenterController::class, 'index'])->name('renters.index');
     Route::get('/renters/create', [RenterController::class, 'create'])->name('renters.create');
     Route::post('/renters', [RenterController::class, 'store'])->name('renters.store');

@@ -1,131 +1,188 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link, router } from '@inertiajs/vue3';
-import { EyeIcon, Trash } from 'lucide-vue-next';
-import { ref } from 'vue';
-import Pagination from '@/Components/Pagination.vue';
-import { useToast } from 'vue-toastification';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import { Head, Link, router } from '@inertiajs/vue3'
+import { EyeIcon, Trash } from 'lucide-vue-next'
+import { ref } from 'vue'
+import Pagination from '@/Components/Pagination.vue'
+import { useToast } from 'vue-toastification'
+import { useTheme } from '@/composables/useTheme'
 
-const toast = useToast();
+const toast = useToast()
+const { theme } = useTheme()
 
 const props = defineProps({
-    payments: Object,
-    filters: Object,
-});
+  payments: Object,
+  filters: Object,
+})
 
-const statusFilter = ref(props.filters.status || '');
+const statusFilter = ref(props.filters.status || '')
 
 const filterPayments = () => {
-    router.get(route('payments.index'), { status: statusFilter.value }, { preserveState: true });
-};
+  router.get(route('payments.index'), { status: statusFilter.value }, { preserveState: true })
+}
 
 const exportPayments = () => {
-    window.location.href = route('payments.export');
-};
+  window.location.href = route('payments.export')
+}
 
 function destroy(id) {
-    if (confirm('Are you sure you want to delete this payment?')) {
-        router.delete(route('payments.destroy', id), {
-            onSuccess: () => {
-                toast.success('Payment deleted successfully');
-            },
-            onError: () => {
-                toast.error('Failed to delete payment');
-            }
-        });
-    }
+  if (confirm('Are you sure you want to delete this payment?')) {
+    router.delete(route('payments.destroy', id), {
+      onSuccess: () => toast.success('Payment deleted successfully'),
+      onError: () => toast.error('Failed to delete payment'),
+    })
+  }
 }
 </script>
 
 <template>
-    <Head title="Payments" />
+  <Head title="Payments" />
 
-    <AuthenticatedLayout>
-        <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                    Payments
-                </h2>
-                <div class="flex space-x-2">
-                    <button @click="exportPayments" class="px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700">
-                        Export CSV
-                    </button>
-                    <Link :href="route('payments.create')" class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700">
-                        Create Payment
-                    </Link>
-                </div>
-            </div>
-        </template>
-
-        <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <!-- Filter Bar -->
-                        <div class="mb-6">
-                            <div class="flex gap-2">
-                                <select v-model="statusFilter" @change="filterPayments"
-                                    class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 block text-sm  text-gray-700">
-                                    <option value="">All Status</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="success">Success</option>
-                                    <option value="failed">Failed</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Renter</th>
-                                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Amount</th>
-                                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Reference</th>
-                                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Status</th>
-                                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Paid At</th>
-                                        <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr v-for="payment in payments.data" :key="payment.id">
-                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 ">{{ payment.renter_name }}</td>
-                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500">Ksh {{ payment.amount }}</td>
-                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500">{{ payment.reference }}</td>
-                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500">
-                                            <span :class="{
-                                                'bg-green-100 text-green-800': payment.status === 'success',
-                                                'bg-yellow-100 text-yellow-800': payment.status === 'pending',
-                                                'bg-red-100 text-red-800': payment.status === 'failed'
-                                            }" class="px-2 py-1 text-xs font-semibold rounded-full">
-                                                {{ payment.status }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500">
-                                            {{ payment.paid_at ? new Date(payment.paid_at).toLocaleString() : 'N/A' }}
-                                        </td>
-                                        <td class="px-6 py-4 space-x-2 whitespace-nowrap">
-                                            <Link :href="route('payments.show', payment.id)" class="text-blue-600 hover:text-blue-900">
-                                                <EyeIcon class="inline-block h-4" />
-                                            </Link>
-                                            <button @click="destroy(payment.id)" class="text-red-600 hover:text-red-900">
-                                                <Trash class="inline-block h-4" />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="payments.data.length === 0">
-                                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">No payments found</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Pagination -->
-                        <div class="mt-4">
-                            <Pagination :links="payments.links" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <AuthenticatedLayout>
+    <template #header>
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-100">
+          Payments
+        </h2>
+        <div class="flex space-x-2">
+          <button
+            @click="exportPayments"
+            class="px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700"
+          >
+            Export CSV
+          </button>
+          <Link
+            :href="route('payments.create')"
+            class="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+          >
+            Create Payment
+          </Link>
         </div>
-    </AuthenticatedLayout>
+      </div>
+    </template>
+
+    <div class="py-12">
+      <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div
+          class="overflow-hidden shadow-sm sm:rounded-lg
+                 bg-white dark:bg-gray-800
+                 text-gray-800 dark:text-gray-100"
+        >
+          <div class="p-6">
+            <!-- Filter Bar -->
+            <div class="mb-6">
+              <div class="flex gap-2">
+                <select
+                  v-model="statusFilter"
+                  @change="filterPayments"
+                  class="border-gray-300 dark:border-gray-700
+                         rounded-md shadow-sm
+                         focus:border-blue-500 focus:ring-blue-500
+                         block text-sm
+                         text-gray-700 dark:text-gray-200
+                         bg-white dark:bg-gray-900"
+                >
+                  <option value="">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="success">Success</option>
+                  <option value="failed">Failed</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-50 dark:bg-gray-900">
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-400 uppercase"
+                    >
+                      Renter
+                    </th>
+                    <th
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-400 uppercase"
+                    >
+                      Amount
+                    </th>
+                    <th
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-400 uppercase"
+                    >
+                      Reference
+                    </th>
+                    <th
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-400 uppercase"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-400 uppercase"
+                    >
+                      Paid At
+                    </th>
+                    <th
+                      class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 dark:text-gray-400 uppercase"
+                    >
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tr v-for="payment in payments.data" :key="payment.id">
+                    <td class="px-6 py-3 text-sm text-gray-700 dark:text-gray-300">
+                      {{ payment.renter_name }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-700 dark:text-gray-300">
+                      Ksh {{ payment.amount }}
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-700 dark:text-gray-300">
+                      {{ payment.reference }}
+                    </td>
+                    <td class="px-6 py-3 text-sm">
+                      <span
+                        :class="{
+                          'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100': payment.status === 'success',
+                          'bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100': payment.status === 'pending',
+                          'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100': payment.status === 'failed',
+                        }"
+                        class="px-2 py-1 text-xs font-semibold rounded-full"
+                      >
+                        {{ payment.status }}
+                      </span>
+                    </td>
+                    <td class="px-6 py-3 text-sm text-gray-700 dark:text-gray-300">
+                      {{ payment.paid_at ? new Date(payment.paid_at).toLocaleString() : 'N/A' }}
+                    </td>
+                    <td class="px-6 py-4 space-x-2 whitespace-nowrap">
+                      <Link
+                        :href="route('payments.show', payment.id)"
+                        class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                      >
+                        <EyeIcon class="inline-block h-4" />
+                      </Link>
+                      <button
+                        @click="destroy(payment.id)"
+                        class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                      >
+                        <Trash class="inline-block h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                  <tr v-if="payments.data.length === 0">
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                      No payments found
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-4">
+              <Pagination :links="payments.links" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </AuthenticatedLayout>
 </template>
