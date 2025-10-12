@@ -41,8 +41,8 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
 
-            // Set subscription to start today and expire in 30 days
-            'subscription_expires_at' => now()->addDays(0.01),
+            // Set subscription to start today( registration day) and expire in 20 days
+            'subscription_expires_at' => now()->addDays(20), // this is trial period for all registered users
             'is_suspended' => false,
         ]);
 

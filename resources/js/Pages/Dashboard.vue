@@ -102,22 +102,22 @@ onUnmounted(() => {
                     Dashboard
                 </h2>
                 <div class="flex items-center gap-2">
-                    <div>
+                    <div v-if="expiresAt && daysRemaining <= 5" class="flex items">
                         <template v-if="expiresAt">
                             <button
-                                class="bg-blue-900 rounded-xl px-3 py-1 dark:bg-green-400"
+                                class="bg-blue-400 rounded-xl px-3 py-1 dark:bg-green-400"
                             >
                                 <div class="font-extrabold">Exp in:</div>
                                 <span class="font-bold">{{ countdown }}</span>
                             </button>
                         </template>
                     </div>
-                    <div v-if="expiresAt && daysRemaining <= 3" class="ml-4">
-                        <PrimaryButton
+                    <div v-if="expiresAt && daysRemaining <= 4" class="ml-4">
+                        <PrimaryButton class="bg-blue-400 rounded-xl px-3 py-1 dark:bg-green-400 dark:hover:bg-green-600 hover:bg-blue-600"
                             ><a
                                 href="https://payment.intasend.com/pay/8d7f60c4-f2c2-4642-a2b6-0654a3cc24e3/"
                                 target="_blank"
-                                class="inline-flex items-center px-4 py-2 bg-blue-900 dark:bg-green-400 border border-transparent rounded-md font-semibold text-white hover:bg-blue-800 dark:hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                class="bg-blue-400 rounded-xl px-3 py-1 dark:bg-green-400"
                             >
                                 Make Payment
                             </a>
