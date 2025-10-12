@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->dateTime('subscription_expires_at')->nullable();
             $table->boolean('is_suspended')->default(false);
+            $table->string('role')->default('user');
             $table->rememberToken();
             $table->timestamps();
         });

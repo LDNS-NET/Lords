@@ -1,16 +1,30 @@
 <?php
 
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+// Normal user controllers
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\RenterController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SmsController;
 use App\Http\Controllers\EmailController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
 
+// SuperAdmin controllers
+use App\Http\Controllers\SuperAdmin\SuperAdminController;
+use App\Http\Controllers\SuperAdmin\SuperAdminTenantController;
+use App\Http\Controllers\SuperAdmin\SuperAdminUserController;
+use App\Http\Controllers\SuperAdmin\SuperAdminPaymentController;
+use App\Http\Controllers\SuperAdmin\SuperAdminSmsController;
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -20,51 +34,37 @@ Route::get('/', function () {
     ]);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Authenticated + Subscription Checked Routes (Tenants)
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'verified', 'check.subscription'])->group(function () {
-
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/data', [DashboardController::class, 'data'])->name('dashboard.data');
 
     // Apartments
-    Route::get('/apartments', [ApartmentController::class, 'index'])->name('apartments.index');
-    Route::get('/apartments/create', [ApartmentController::class, 'create'])->name('apartments.create');
-    Route::post('/apartments', [ApartmentController::class, 'store'])->name('apartments.store');
-    Route::get('/apartments/{apartment}', [ApartmentController::class, 'show'])->name('apartments.show');
-    Route::get('/apartments/{apartment}/edit', [ApartmentController::class, 'edit'])->name('apartments.edit');
-    Route::put('/apartments/{apartment}', [ApartmentController::class, 'update'])->name('apartments.update');
-    Route::delete('/apartments/{apartment}', [ApartmentController::class, 'destroy'])->name('apartments.destroy');
+    Route::resource('apartments', ApartmentController::class);
 
     // Renters
     Route::resource('renters', RenterController::class);
-    Route::get('/renters', [RenterController::class, 'index'])->name('renters.index');
-    Route::get('/renters/create', [RenterController::class, 'create'])->name('renters.create');
-    Route::post('/renters', [RenterController::class, 'store'])->name('renters.store');
-    Route::get('/renters/{renter}', [RenterController::class, 'show'])->name('renters.show');
-    Route::get('/renters/{renter}/edit', [RenterController::class, 'edit'])->name('renters.edit');
-    Route::put('/renters/{renter}', [RenterController::class, 'update'])->name('renters.update');
-    Route::delete('/renters/{renter}', [RenterController::class, 'destroy'])->name('renters.destroy');
 
     // Payments
-    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
-    Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
-    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
-    Route::get('/payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
-    Route::get('/payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit');
-    Route::put('/payments/{payment}', [PaymentController::class, 'update'])->name('payments.update');
-    Route::delete('/payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy');
+    Route::resource('payments', PaymentController::class);
 
     // SMS
-    Route::get('/sms', [SmsController::class, 'index'])->name('sms.index');
-    Route::get('/sms/create', [SmsController::class, 'create'])->name('sms.create');
-    Route::post('/sms', [SmsController::class, 'store'])->name('sms.store');
-    Route::delete('/sms/{smsLog}', [SmsController::class, 'destroy'])->name('sms.destroy');
+    Route::resource('sms', SmsController::class)->only(['index', 'create', 'store', 'destroy']);
+
     // Emails
-    Route::get('/emails', [EmailController::class, 'index'])->name('emails.index');
-    Route::get('/emails/create', [EmailController::class, 'create'])->name('emails.create');
-    Route::post('/emails', [EmailController::class, 'store'])->name('emails.store');
+    Route::resource('emails', EmailController::class)->only(['index', 'create', 'store']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Payment Success Callback
+|--------------------------------------------------------------------------
+*/
 Route::get('/payment/success', function () {
     $user = auth()->user();
     if ($user) {
@@ -76,11 +76,40 @@ Route::get('/payment/success', function () {
     return redirect()->route('dashboard');
 })->name('payment.success');
 
-
+/*
+|--------------------------------------------------------------------------
+| Profile Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+/*
+|--------------------------------------------------------------------------
+| SuperAdmin Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'superadmin'])
+    ->prefix('superadmin')
+    ->name('superadmin.')
+    ->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])->name('dashboard');
+
+        // Tenants
+        Route::resource('tenants', SuperAdminTenantController::class)->only(['index', 'edit', 'update', 'destroy']);
+
+        // Users
+        Route::resource('users', SuperAdminUserController::class)->only(['index', 'edit', 'update', 'destroy']);
+
+        // Payments
+        Route::resource('payments', SuperAdminPaymentController::class)->only(['index']);
+
+        // SMS
+        Route::resource('sms', SuperAdminSmsController::class)->only(['index']);
+    });
 
 require __DIR__.'/auth.php';

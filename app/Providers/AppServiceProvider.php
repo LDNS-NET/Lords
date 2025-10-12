@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\SuperAdminMiddleware;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Register the CheckSubscription middleware globally
        Route::aliasMiddleware('check.subscription', CheckSubscription::class);
+       Route::aliasMiddleware('superadmin', SuperAdminMiddleware::class);
         
     }
 }
