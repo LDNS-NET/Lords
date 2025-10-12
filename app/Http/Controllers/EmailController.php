@@ -80,7 +80,7 @@ class EmailController extends Controller
                 'personalizations' => $personalizations,
                 'from' => [
                     'email' => $fromEmail,
-                    'name' => $fromName,
+                    'name' => $fromName
                 ],
                 'subject' => $emailLog->subject,
                 'content' => [

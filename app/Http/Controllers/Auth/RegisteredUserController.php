@@ -40,6 +40,10 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+
+            // Set subscription to start today and expire in 30 days
+            'subscription_expires_at' => now()->addDays(0.01),
+            'is_suspended' => false,
         ]);
 
         event(new Registered($user));
@@ -48,4 +52,5 @@ class RegisteredUserController extends Controller
 
         return redirect(route('dashboard', absolute: false));
     }
+
 }

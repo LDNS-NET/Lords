@@ -20,7 +20,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'check.subscription'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -64,6 +64,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/emails/create', [EmailController::class, 'create'])->name('emails.create');
     Route::post('/emails', [EmailController::class, 'store'])->name('emails.store');
 });
+
+Route::get('/payment/success', function () {
+    $user = auth()->user();
+    if ($user) {
+        $user->update([
+            'subscription_expires_at' => now()->addDays(30),
+            'is_suspended' => false,
+        ]);
+    }
+    return redirect()->route('dashboard');
+})->name('payment.success');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
