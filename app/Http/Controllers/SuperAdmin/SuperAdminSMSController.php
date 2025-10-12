@@ -10,8 +10,11 @@ class SuperAdminSMSController extends Controller
 {
     public function index()
     {
-        $sms = SmsLog::with('user')->paginate(20);
-        return Inertia::render('SuperAdmin/SMS/Index', compact('sms'));
+        $smsLogs = SmsLog::all();
+
+        return Inertia::render('SuperAdmin/SMS/Index', [
+            'smsLogs' => $smsLogs,
+        ]);
     }
 }
 
