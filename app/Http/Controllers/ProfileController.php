@@ -21,6 +21,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'user' => $request->user(), // 👈 add this
         ]);
     }
 
@@ -28,17 +29,31 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+{
+    $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+    // Only fill the fields that can be updated
+    $user->fill([
+        'name' => $request->input('name'),
+        'email' => $request->input('email'),
+        'username' => $request->input('username'),
+    ]);
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit');
+    // If email changed, reset verification
+    if ($user->isDirty('email')) {
+        $user->email_verified_at = null;
     }
+
+    // Only update new password if provided
+    if ($request->filled('new_password')) {
+        $user->password = bcrypt($request->input('new_password'));
+    }
+
+    $user->save();
+
+    return Redirect::route('profile.edit')->with('status', 'profile-updated');
+}
+
 
     /**
      * Delete the user's account.

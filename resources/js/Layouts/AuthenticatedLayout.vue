@@ -18,6 +18,11 @@ import {
     Building2,
     SunIcon,
     FolderEdit,
+    AlertCircleIcon,
+    ReceiptCent,
+    GitPullRequest,
+    Link2Icon,
+    MailCheck,
 } from "lucide-vue-next";
 
 const { theme, applyTheme } = useTheme();
@@ -50,10 +55,10 @@ watch(theme, (val) => {
             >
                 <Link
                     :href="route('dashboard')"
-                    class="flex items-center space-x-2"
+                    class="flex items-center space-x-2 "
                 >
                     <ApplicationLogo class="h-8 w-auto" />
-                    <span class="font-semibold text-lg">HouseMS</span>
+                    <span class="font-semibold text-lg text-black dark:text-white">HouseMS</span>
                 </Link>
                 <button
                     @click="sidebarOpen = false"
@@ -81,9 +86,9 @@ watch(theme, (val) => {
                     <NavLink
                         :href="route('dashboard')"
                         :active="route().current('dashboard')"
-                        class="flex items-center p-2"
+                        class="flex items-center dark:text-white p-2"
                     >
-                        <LayoutDashboard class="mr-2 h-4 w-4 text-blue-500" />
+                        <LayoutDashboard class="mr-2 h-4 w-4 text-blue-700 dark:text-blue-300" />
                         Dashboard
                     </NavLink>
                 </div>
@@ -92,9 +97,9 @@ watch(theme, (val) => {
                     <NavLink
                         :href="route('apartments.index')"
                         :active="route().current('apartments.index')"
-                        class="flex items-center p-2"
+                        class="flex items-center dark:text-white p-2"
                     >
-                        <Building2 class="mr-2 h-4 w-4 text-indigo-500" />
+                        <Building2 class="mr-2 h-4 w-4 text-indigo-500 dark:text-indigo-200" />
                         Apartments
                     </NavLink>
                 </div>
@@ -103,7 +108,7 @@ watch(theme, (val) => {
                     <NavLink
                         :href="route('renters.index')"
                         :active="route().current('renters.index')"
-                        class="flex items-center p-2"
+                        class="flex items-center dark:text-white p-2"
                     >
                         <Users class="mr-2 h-4 w-4 text-emerald-500" />
                         Renters
@@ -114,7 +119,7 @@ watch(theme, (val) => {
                     <NavLink
                         :href="route('payments.index')"
                         :active="route().current('payments.index')"
-                        class="flex items-center p-2"
+                        class="flex items-center dark:text-white p-2"
                     >
                         <Banknote class="mr-2 h-4 w-4 text-yellow-500" />
                         Payments
@@ -125,7 +130,7 @@ watch(theme, (val) => {
                     <NavLink
                         :href="route('sms.index')"
                         :active="route().current('sms.index')"
-                        class="flex items-center p-2"
+                        class="flex items-center dark:text-white p-2"
                     >
                         <MessageSquare class="mr-2 h-4 w-4 text-purple-500" />
                         SMS
@@ -136,12 +141,59 @@ watch(theme, (val) => {
                     <NavLink
                         :href="route('emails.index')"
                         :active="route().current('emails.index')"
-                        class="flex items-center p-2"
+                        class="flex items-center dark:text-white p-2"
                     >
-                        <MessageSquare class="mr-2 h-4 w-4 text-red-500" />
+                        <MailCheck class="mr-2 h-4 w-4 text-red-500" />
                         Emails
                     </NavLink>
                 </div>
+
+                <div class="align-bottom m-4 py-52">
+                    <h2 class="flex">
+                        <AlertCircleIcon class="mr-5 h-7 w-auto text-red-500"/>
+                        <span>Coming soon</span>
+                        
+                    </h2>
+
+                    <div class="bg-slate-300 border dark:bg-blue-700 rounded-xl py-2 m-2">
+                        <div class="mb-2 px-2">
+                            <NavLink
+                                href="#"
+                                :active="route().current('invoices.index')"
+                                class="flex items-center dark:text-white p-2"
+                            >
+                                <ReceiptCent class="mr-2 h-4 w-4 text-blue-500" />
+                                Invoices
+                            </NavLink>
+                        </div>
+
+                        <div class="mb-2 px-2">
+                            <NavLink
+                                href="#"
+                                :active="route().current('stk.index')"
+                                class="flex items-center dark:text-white p-2"
+                            >
+                                <GitPullRequest class="mr-2 h-4 w-4 text-purple-500" />
+                                STK push
+                            </NavLink>
+                        </div>
+
+                        <div class="mb-2 px-2">
+                            <NavLink
+                                href="#"
+                                :active="route().current('Tportal.index')"
+                                class="flex items-center dark:text-white p-2"
+                            >
+                                <Link2Icon class="mr-2 h-4 w-4 text-green-500" />
+                                Tenant portal
+                            </NavLink>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+
             </nav>
         </aside>
 
@@ -158,12 +210,12 @@ watch(theme, (val) => {
         >
             <!-- Top Navbar -->
             <nav
-                class="flex justify-between items-center px-4 py-3 shadow-sm bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+                class="flex justify-between items-center px-4 py-3 shadow-sm bg-gray-300 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-700"
             >
                 <div class="flex gap-4 font-extrabold items-left ml-2">
                     <button
                         @click="sidebarOpen = true"
-                        class="lg:hidden text-gray-600 dark:text-gray-300 focus:outline-none"
+                        class="lg:hidden text-gray-900 dark:text-white focus:outline-none"
                     >
                         <svg
                             class="h-6 w-6"
@@ -190,7 +242,7 @@ watch(theme, (val) => {
                                 class="inline-flex items-center rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 dark:text-gray-200"
                             >
                                 <Settings
-                                    class="h-5 w-auto ml-1 text-gray-400"
+                                    class="h-5 w-auto ml-1 text-gray-900 dark:text-white"
                                 />
                             </button>
                         </template>
@@ -231,10 +283,10 @@ watch(theme, (val) => {
             <!-- Header -->
             <header
                 v-if="$slots.header"
-                class="bg-white dark:bg-gray-800 shadow transition-colors duration-300"
+                class="bg-cyan-100 dark:bg-cyan-900 shadow border transition-colors duration-300"
             >
                 <div
-                    class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-gray-900 dark:text-white"
+                    class="max-w-7xl mx-auto py-2 px-2 sm:px-4 lg:px-6 text-gray-900 dark:text-white"
                 >
                     <slot name="header" />
                 </div>
@@ -242,7 +294,7 @@ watch(theme, (val) => {
 
             <!-- Main Content -->
             <main
-                class="flex-1 p-4 bg-gray-50 dark:bg-gray-900 transition-colors duration-300"
+                class="flex justify-center p-4  dark:bg-gray-900 rounded-xl transition-colors duration-300"
             >
                 <slot />
             </main>

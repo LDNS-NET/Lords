@@ -65,7 +65,7 @@ function destroy(id) {
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div
-          class="overflow-hidden shadow-sm sm:rounded-lg
+          class="overflow-hidden border border-blue-400 dark:border-x-blue-400 shadow-sm sm:rounded-lg
                  bg-white dark:bg-gray-800
                  text-gray-800 dark:text-gray-100"
         >

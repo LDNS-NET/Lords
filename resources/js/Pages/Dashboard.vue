@@ -128,13 +128,13 @@ onUnmounted(() => {
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-8">
+            <div class="mx-auto rounded-xl py-4 max-w-7xl sm:px-6 lg:px-8 space-y-8">
                 <!-- Stats Cards -->
                 <div
-                    class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                    class="grid grid-cols-1  gap-6 sm:grid-cols-2 lg:grid-cols-3"
                 >
                     <div
-                        class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
+                        class="p-6 bg-white border border-blue-400 dark:border-x-blue-400 dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
                     >
                         <div
                             class="text-sm font-medium text-gray-500 dark:text-gray-400"
@@ -149,7 +149,7 @@ onUnmounted(() => {
                     </div>
 
                     <div
-                        class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
+                        class="p-6 bg-white border border-blue-400 dark:border-x-blue-400 dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
                     >
                         <div
                             class="text-sm font-medium text-gray-500 dark:text-gray-400"
@@ -164,7 +164,7 @@ onUnmounted(() => {
                     </div>
 
                     <div
-                        class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
+                        class="p-6 border border-blue-400 dark:border-x-blue-400 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
                     >
                         <div
                             class="text-sm font-medium text-gray-500 dark:text-gray-400"
@@ -177,7 +177,7 @@ onUnmounted(() => {
                     </div>
 
                     <div
-                        class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
+                        class="border border-blue-400 dark:border-x-blue-400 p-6 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
                     >
                         <div
                             class="text-sm font-medium text-gray-500 dark:text-gray-400"
@@ -190,7 +190,7 @@ onUnmounted(() => {
                     </div>
 
                     <div
-                        class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
+                        class="p-6 border border-blue-400 dark:border-x-blue-400 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
                     >
                         <div
                             class="text-sm font-medium text-gray-500 dark:text-gray-400"
@@ -203,7 +203,7 @@ onUnmounted(() => {
                     </div>
 
                     <div
-                        class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
+                        class="p-6 border border-blue-400 dark:border-x-blue-400 bg-white dark:bg-gray-800 rounded-lg shadow transition-colors duration-200"
                     >
                         <div
                             class="text-sm font-medium text-gray-500 dark:text-gray-400"
@@ -217,7 +217,7 @@ onUnmounted(() => {
                 </div>
 
                 <!-- Recent Payments -->
-                <div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
+                <div class="p-6 border border-blue-400 dark:border-x-blue-400 bg-white dark:bg-gray-800 rounded-lg shadow">
                     <h3
                         class="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100"
                     >

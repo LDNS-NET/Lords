@@ -111,12 +111,12 @@ function submit() {
             </div>
         </template>
 
-        <div class="py-12">
+        <div class="py-12 ">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
-                    <div class="p-6">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <div class="p-6 border border-blue-400 dark:border-x-blue-400">
+                        <div class="overflow-x-auto ">
+                            <table class="min-w-full divide-y  divide-gray-200 dark:divide-gray-700">
                                 <thead class="bg-gray-50 dark:bg-gray-700">
                                     <tr>
                                         <th

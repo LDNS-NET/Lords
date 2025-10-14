@@ -31,7 +31,7 @@ const stats = computed(() => [
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="border border-blue-400 dark:border-x-blue-400 grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div v-for="stat in stats" :key="stat.title"
                         class="overflow-hidden bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
                         <div class="p-5">

@@ -66,9 +66,9 @@ function destroy(renterId) {
         </template>
 
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 ">
                 <div
-                    class="overflow-hidden bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border dark:border-gray-700"
+                    class="overflow-hidden border-blue-400 dark:border-x-blue-400 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg border dark:border-gray-700"
                 >
                     <div class="p-6">
                         <!-- Search -->
